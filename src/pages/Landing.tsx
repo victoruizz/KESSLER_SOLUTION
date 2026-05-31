@@ -4,6 +4,7 @@ import { ArrowRight, Eye, Compass, Hand } from "lucide-react";
 import { Button } from "../components/ui/Button";
 import { BinaryBackground } from "../components/ui/BinaryBackground";
 import { StatNumber } from "../components/ui/StatNumber";
+import { EarthOrbit } from "../components/visual/EarthOrbit";
 import { globalStats, totalCatalogedMassKg, uniqueCountriesCount } from "../data/stats";
 import { formatKg, formatNumber } from "../lib/format";
 
@@ -40,15 +41,18 @@ export function Landing() {
         ></div>
         <BinaryBackground density={28} opacity={0.04} />
 
-        <div className="relative max-w-7xl mx-auto px-6 md:px-10 pt-20 pb-28">
+        <div className="relative max-w-7xl mx-auto px-6 md:px-10 pt-20 pb-28 grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="max-w-3xl space-y-8"
+            className="space-y-8"
           >
             <div className="hud-label text-mars-orange">Projeto</div>
-            <h1 className="font-display font-bold tracking-[0.18em] text-text-primary uppercase leading-[0.95]" style={{ fontSize: "clamp(54px, 9vw, 128px)" }}>
+            <h1
+              className="font-display font-bold tracking-[0.18em] text-text-primary uppercase leading-[0.95] glow-text"
+              style={{ fontSize: "clamp(54px, 9vw, 128px)" }}
+            >
               Kessler
             </h1>
             <div className="font-display text-mars-amber tracking-[0.42em] uppercase text-xs md:text-sm">
@@ -71,6 +75,15 @@ export function Landing() {
                 </Button>
               </Link>
             </div>
+          </motion.div>
+
+          <motion.div
+            className="relative flex items-center justify-center"
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.9, ease: "easeOut", delay: 0.15 }}
+          >
+            <EarthOrbit />
           </motion.div>
         </div>
       </section>
@@ -122,7 +135,12 @@ export function Landing() {
           <h2 className="font-display text-3xl md:text-4xl tracking-wide uppercase">Tres pilares.</h2>
           <div className="space-y-3">
             {pillars.map((pillar) => (
-              <div key={pillar.title} className="surface-panel p-5 flex gap-4">
+              <motion.div
+                key={pillar.title}
+                whileHover={{ x: 4 }}
+                transition={{ type: "spring", stiffness: 320, damping: 22 }}
+                className="surface-panel p-5 flex gap-4 hover:border-mars-orange/50"
+              >
                 <div className="w-10 h-10 border border-mars-orange/60 flex items-center justify-center text-mars-orange">
                   <pillar.icon size={18} />
                 </div>
@@ -132,7 +150,7 @@ export function Landing() {
                   </div>
                   <p className="text-text-secondary text-sm mt-1 leading-relaxed">{pillar.description}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

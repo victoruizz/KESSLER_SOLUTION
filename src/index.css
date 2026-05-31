@@ -99,3 +99,62 @@
 .animate-orbit-slow {
   animation: orbit-rotate 180s linear infinite;
 }
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 6px rgba(255, 107, 26, 0.4), 0 0 14px rgba(255, 107, 26, 0.12);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(255, 107, 26, 0.7), 0 0 30px rgba(255, 107, 26, 0.3);
+  }
+}
+
+.orange-glow {
+  animation: glow-pulse 3.2s ease-in-out infinite;
+}
+
+@keyframes glow-text-pulse {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(255, 107, 26, 0.25);
+  }
+  50% {
+    text-shadow: 0 0 18px rgba(255, 107, 26, 0.55);
+  }
+}
+
+.glow-text {
+  animation: glow-text-pulse 3.6s ease-in-out infinite;
+}
+
+.atmosphere-curve {
+  background: radial-gradient(
+    ellipse at 50% 100%,
+    rgba(255, 107, 26, 0.22) 0%,
+    rgba(255, 107, 26, 0.08) 32%,
+    rgba(255, 107, 26, 0) 62%
+  );
+  filter: blur(10px);
+}
+
+@keyframes starfield-drift {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-30px);
+  }
+}
+
+.starfield-drift {
+  animation: starfield-drift 200s linear infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orange-glow,
+  .glow-text,
+  .starfield-drift,
+  .animate-orbit-slow,
+  .animate-pulse-orange {
+    animation: none;
+  }
+}
