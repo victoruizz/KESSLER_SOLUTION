@@ -6,6 +6,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { Catalog } from "./pages/Catalog";
 import { DebrisDetail } from "./pages/DebrisDetail";
 import { MyImpact } from "./pages/MyImpact";
+import { About } from "./pages/About";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="/catalogo" element={<Catalog />} />
           <Route path="/detrito/:id" element={<DebrisDetail />} />
           <Route path="/meu-impacto" element={<MyImpact />} />
+          <Route path="/sobre" element={<About />} />
           <Route path="*" element={<Landing />} />
         </Routes>
       </div>
