@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    background-color: #000000;
+  }
+
+  body {
+    font-family: "Inter", system-ui, sans-serif;
+    color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: #ff6b1a;
+    color: #000000;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0a0a0a;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1f1f1f;
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #b84a0f;
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: "Orbitron", sans-serif;
+  }
+
+  .hud-label {
+    font-family: "Orbitron", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 11px;
+    font-weight: 500;
+    color: #b0b0b0;
+  }
+
+  .mars-curve {
+    position: absolute;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at center, rgba(255, 107, 26, 0.55) 0%, rgba(255, 107, 26, 0.18) 35%, rgba(255, 107, 26, 0) 60%);
+    filter: blur(6px);
+  }
+
+  .grid-overlay {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .surface-panel {
+    background-color: #0a0a0a;
+    border: 1px solid #1f1f1f;
+  }
+
+  .surface-panel-elevated {
+    background-color: #141414;
+    border: 1px solid #1f1f1f;
+  }
+}
+
+@keyframes pulse-orange {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+.animate-pulse-orange {
+  animation: pulse-orange 2.4s ease-in-out infinite;
+}
+
+@keyframes orbit-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-orbit-slow {
+  animation: orbit-rotate 180s linear infinite;
+}
