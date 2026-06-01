@@ -7,6 +7,7 @@ dist
 .vite
 .vscode
 .idea
+.claude
 *.tsbuildinfo
 vite.config.js
 vite.config.d.ts
