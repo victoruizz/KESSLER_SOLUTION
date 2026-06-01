@@ -12,6 +12,7 @@ Tagline: "Antes que a cascata comece."
 
 ## Principais funcionalidades
 
+- Landing com a Terra renderizada em tempo real: um globo tridimensional desenhado em Canvas, com textura real do planeta, rotacao continua, terminador dia e noite e detritos em orbita com pequenos choques de colisao.
 - Catalogo curado com 16 detritos reais, cada um com historia autoral, dados orbitais e nivel de risco.
 - Mapa orbital interativo em SVG mostrando a Terra ao centro e os aneis LEO, MEO e GEO com os detritos coloridos por risco.
 - Painel com metricas agregadas de massa, risco e financiamento de remocao.
@@ -22,12 +23,48 @@ Tagline: "Antes que a cascata comece."
 
 ## Paginas
 
+- Login — `/login`
 - Landing — `/`
 - Painel — `/dashboard`
 - Catalogo — `/catalogo`
 - Detalhe do detrito — `/detrito/:id`
 - Meu Impacto — `/meu-impacto`
+- Perfil — `/perfil`
 - Sobre — `/sobre`
+
+## Telas
+
+### Login
+
+![Tela de login](docs/login.png)
+
+### Landing
+
+![Landing com a Terra em 3D](docs/landing.png)
+
+### Painel
+
+![Painel operacional](docs/dashboard.png)
+
+### Catalogo
+
+![Catalogo de detritos](docs/catalogo.png)
+
+### Detalhe do detrito
+
+![Detalhe do detrito](docs/detalhe.png)
+
+### Meu Impacto
+
+![Meu Impacto](docs/meu-impacto.png)
+
+### Perfil
+
+![Perfil do operador](docs/perfil.png)
+
+### Sobre
+
+![Sobre o projeto](docs/sobre.png)
 
 ## Stack
 
