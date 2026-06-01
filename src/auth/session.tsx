@@ -4,14 +4,21 @@ import type { ReactNode } from "react";
 export interface Session {
   email: string;
   name: string;
+  avatar: string | null;
   visitor: boolean;
   since: string;
+}
+
+export interface ProfileChanges {
+  name?: string;
+  avatar?: string | null;
 }
 
 interface SessionContextValue {
   session: Session | null;
   login: (email: string) => void;
   continueAsVisitor: () => void;
+  updateProfile: (changes: ProfileChanges) => void;
   logout: () => void;
 }
 
@@ -27,7 +34,7 @@ function readStoredSession(): Session | null {
     if (typeof parsed.name !== "string" || typeof parsed.visitor !== "boolean") {
       return null;
     }
-    return parsed;
+    return { ...parsed, avatar: typeof parsed.avatar === "string" ? parsed.avatar : null };
   } catch {
     return null;
   }
@@ -64,6 +71,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         setSession({
           email,
           name: nameFromEmail(email),
+          avatar: null,
           visitor: false,
           since: new Date().toISOString(),
         }),
@@ -71,8 +79,19 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         setSession({
           email: "",
           name: "Visitante",
+          avatar: null,
           visitor: true,
           since: new Date().toISOString(),
+        }),
+      updateProfile: (changes: ProfileChanges) =>
+        setSession((current) => {
+          if (!current) return current;
+          const nextName =
+            typeof changes.name === "string" && changes.name.trim().length > 0
+              ? changes.name.trim()
+              : current.name;
+          const nextAvatar = changes.avatar !== undefined ? changes.avatar : current.avatar;
+          return { ...current, name: nextName, avatar: nextAvatar };
         }),
       logout: () => setSession(null),
     }),

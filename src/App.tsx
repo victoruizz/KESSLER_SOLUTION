@@ -10,6 +10,7 @@ import { Catalog } from "./pages/Catalog";
 import { DebrisDetail } from "./pages/DebrisDetail";
 import { MyImpact } from "./pages/MyImpact";
 import { About } from "./pages/About";
+import { Profile } from "./pages/Profile";
 import { Login } from "./pages/Login";
 import { useSession } from "./auth/session";
 
@@ -39,6 +40,7 @@ export default function App() {
             <Route path="/catalogo" element={<RequireAuth><Catalog /></RequireAuth>} />
             <Route path="/detrito/:id" element={<RequireAuth><DebrisDetail /></RequireAuth>} />
             <Route path="/meu-impacto" element={<RequireAuth><MyImpact /></RequireAuth>} />
+            <Route path="/perfil" element={<RequireAuth><Profile /></RequireAuth>} />
             <Route path="/sobre" element={<RequireAuth><About /></RequireAuth>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
