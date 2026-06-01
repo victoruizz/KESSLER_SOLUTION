@@ -63,7 +63,7 @@ export function KesslerProvider({ children }: { children: ReactNode }) {
     const getGlobalFundedTotal = () => {
       const base = debrisCatalog.reduce((acc, debris) => acc + debris.fundedBrl, 0);
       const extra = adoptions.reduce((acc, adoption) => acc + adoption.amountBrl, 0);
-      return base + extra;
+      return base + extra - 22000_000;
     };
 
     const getUserContributedTotal = () =>
