@@ -32,21 +32,28 @@ const pillars = [
 export function Landing() {
   return (
     <div className="relative overflow-hidden">
-      <section className="relative">
-        <div className="absolute inset-0 grid-overlay opacity-40" aria-hidden></div>
+      <section className="relative overflow-hidden min-h-[90vh] flex items-center">
+        <div className="absolute inset-0 grid-overlay opacity-30" aria-hidden></div>
+        <BinaryBackground density={26} opacity={0.04} />
+
         <div
-          className="mars-curve"
-          style={{ width: 1200, height: 1200, right: "-700px", bottom: "-800px", borderRadius: "50%" }}
+          className="pointer-events-none absolute top-1/2 right-0 -translate-y-1/2 translate-x-[26%] sm:translate-x-[20%] lg:translate-x-[14%] w-[150vw] sm:w-[820px] lg:w-[1120px] xl:w-[1320px] max-w-none"
+          aria-hidden
+        >
+          <EarthOrbit size={1320} />
+        </div>
+
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-space-black via-space-black/70 to-transparent"
           aria-hidden
         ></div>
-        <BinaryBackground density={28} opacity={0.04} />
 
-        <div className="relative max-w-7xl mx-auto px-6 md:px-10 pt-16 md:pt-24 pb-28 md:pb-36 grid gap-12 lg:grid-cols-[1fr_1.08fr] lg:items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 w-full py-20 md:py-28">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="space-y-8"
+            className="space-y-8 max-w-xl"
           >
             <div className="hud-label text-mars-orange">Projeto</div>
             <h1
@@ -58,7 +65,7 @@ export function Landing() {
             <div className="font-display text-mars-amber tracking-[0.42em] uppercase text-xs md:text-sm">
               Antes que a cascata comece.
             </div>
-            <p className="text-text-secondary text-base md:text-lg max-w-2xl leading-relaxed">
+            <p className="text-text-secondary text-base md:text-lg max-w-lg leading-relaxed">
               Uma plataforma publica para visualizar, compreender e apoiar a remocao dos detritos
               espaciais em orbita da Terra. Inspirada nos creditos de carbono, ela transforma uma
               ameaca silenciosa em uma agenda visivel.
@@ -75,15 +82,6 @@ export function Landing() {
                 </Button>
               </Link>
             </div>
-          </motion.div>
-
-          <motion.div
-            className="relative flex items-center justify-center lg:justify-end"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
-          >
-            <EarthOrbit size={680} className="lg:-mr-6 xl:-mr-12" />
           </motion.div>
         </div>
       </section>

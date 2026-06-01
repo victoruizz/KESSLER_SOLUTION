@@ -7,13 +7,14 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
+import { EarthGlobe } from "./EarthGlobe";
 
 interface EarthOrbitProps {
   size?: number;
   className?: string;
 }
 
-interface OrbitingDebris {
+interface OrbitingObject {
   radius: number;
   squash: number;
   duration: number;
@@ -21,53 +22,64 @@ interface OrbitingDebris {
   color: string;
   startAngle: number;
   reverse?: boolean;
+  panel?: boolean;
 }
 
 const CENTER = 220;
-const GLOBE_RADIUS = 118;
 
 const RINGS: { radius: number; squash: number }[] = [
-  { radius: 150, squash: 0.34 },
-  { radius: 172, squash: 0.46 },
-  { radius: 194, squash: 0.26 },
+  { radius: 168, squash: 0.36 },
+  { radius: 198, squash: 0.3 },
 ];
 
-const MERIDIANS = [0.32, 0.62, 0.86, 1];
-const PARALLELS = [0.28, 0.56, 0.82];
-
-const DEBRIS: OrbitingDebris[] = [
-  { radius: 150, squash: 0.34, duration: 24, size: 3.4, color: "#FF6B1A", startAngle: 18 },
-  { radius: 150, squash: 0.34, duration: 24, size: 2.2, color: "#FFB347", startAngle: 205 },
-  { radius: 172, squash: 0.46, duration: 40, size: 2.6, color: "#FFFFFF", startAngle: 96, reverse: true },
-  { radius: 172, squash: 0.46, duration: 40, size: 2, color: "#B0B0B0", startAngle: 286, reverse: true },
-  { radius: 194, squash: 0.26, duration: 58, size: 3.8, color: "#FF6B1A", startAngle: 54 },
-  { radius: 194, squash: 0.26, duration: 58, size: 2.4, color: "#FACC15", startAngle: 234 },
-  { radius: 172, squash: 0.46, duration: 48, size: 2.2, color: "#FF6B1A", startAngle: 150, reverse: true },
+const ORBITERS: OrbitingObject[] = [
+  { radius: 168, squash: 0.36, duration: 34, size: 2.4, color: "#FFB347", startAngle: 22, panel: true },
+  { radius: 168, squash: 0.36, duration: 34, size: 1.7, color: "#B0B0B0", startAngle: 212 },
+  { radius: 198, squash: 0.3, duration: 58, size: 2.6, color: "#FF6B1A", startAngle: 78, reverse: true },
+  { radius: 198, squash: 0.3, duration: 58, size: 1.8, color: "#FFFFFF", startAngle: 268, reverse: true, panel: true },
 ];
 
 const TWINKLES = [
-  { x: 64, y: 92, r: 1.4, delay: 0 },
-  { x: 372, y: 120, r: 1.1, delay: 1.2 },
-  { x: 340, y: 348, r: 1.6, delay: 0.6 },
-  { x: 84, y: 332, r: 1.2, delay: 1.8 },
-  { x: 402, y: 248, r: 1, delay: 0.9 },
+  { x: 54, y: 84, r: 1.4, delay: 0 },
+  { x: 386, y: 110, r: 1.1, delay: 1.2 },
+  { x: 356, y: 360, r: 1.6, delay: 0.6 },
+  { x: 70, y: 346, r: 1.2, delay: 1.8 },
+  { x: 408, y: 256, r: 1, delay: 0.9 },
 ];
+
+const COLLISIONS = [
+  { x: 57, y: 236, dur: 7.5, delay: 0.6 },
+  { x: 49, y: 190, dur: 9.2, delay: 3.4 },
+  { x: 53, y: 222, dur: 8.3, delay: 5.6 },
+  { x: 70, y: 262, dur: 10.4, delay: 2.1 },
+];
+
+const SPOKES: [number, number][] = [
+  [0, -4],
+  [3.46, -2],
+  [3.46, 2],
+  [0, 4],
+  [-3.46, 2],
+  [-3.46, -2],
+];
+
+const FLASH_KEYTIMES = "0;0.84;0.9;0.96;1";
 
 export function EarthOrbit({ size = 600, className = "" }: EarthOrbitProps) {
   const reduceMotion = useReducedMotion();
 
   const { scrollY } = useScroll();
-  const scrollScale = useTransform(scrollY, [0, 620], [1, 1.14]);
-  const scrollLift = useTransform(scrollY, [0, 620], [0, 74]);
-  const ringRotate = useTransform(scrollY, [0, 1300], [0, 34]);
-  const glowOpacity = useTransform(scrollY, [0, 520], [0.45, 0.92]);
+  const scrollScale = useTransform(scrollY, [0, 620], [1, 1.12]);
+  const scrollLift = useTransform(scrollY, [0, 620], [0, 70]);
+  const ringRotate = useTransform(scrollY, [0, 1300], [0, 30]);
+  const glowOpacity = useTransform(scrollY, [0, 520], [0.55, 0.85]);
 
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
   const springX = useSpring(pointerX, { stiffness: 60, damping: 20 });
   const springY = useSpring(pointerY, { stiffness: 60, damping: 20 });
-  const tiltX = useTransform(springY, [-0.5, 0.5], [10, -10]);
-  const tiltY = useTransform(springX, [-0.5, 0.5], [-12, 12]);
+  const tiltX = useTransform(springY, [-0.5, 0.5], [9, -9]);
+  const tiltY = useTransform(springX, [-0.5, 0.5], [-11, 11]);
 
   useEffect(() => {
     if (reduceMotion) return;
@@ -82,7 +94,9 @@ export function EarthOrbit({ size = 600, className = "" }: EarthOrbitProps) {
   const outerStyle = reduceMotion
     ? { width: "100%", maxWidth: size }
     : { width: "100%", maxWidth: size, scale: scrollScale, y: scrollLift };
-  const tiltStyle = reduceMotion ? undefined : { rotateX: tiltX, rotateY: tiltY, transformStyle: "preserve-3d" as const };
+  const tiltStyle = reduceMotion
+    ? undefined
+    : { rotateX: tiltX, rotateY: tiltY, transformStyle: "preserve-3d" as const };
   const orbitStyle = reduceMotion ? undefined : { rotate: ringRotate };
 
   return (
@@ -95,129 +109,51 @@ export function EarthOrbit({ size = 600, className = "" }: EarthOrbitProps) {
       aria-hidden
     >
       <div style={{ perspective: 1300 }}>
-        <motion.div className="relative" style={tiltStyle}>
-          <svg
-            viewBox="0 0 440 440"
-            className="w-full h-auto block"
-            role="img"
-            aria-label="Terra vista da orbita com detritos ao redor"
+        <motion.div className="relative" style={{ ...tiltStyle, aspectRatio: "1 / 1" }}>
+          <div
+            className="absolute rounded-full"
+            style={{
+              left: "11%",
+              top: "11%",
+              width: "78%",
+              height: "78%",
+              background:
+                "radial-gradient(circle at 50% 50%, rgba(127,196,240,0.06) 50%, rgba(255,107,26,0.09) 72%, rgba(255,107,26,0) 100%)",
+              filter: "blur(16px)",
+            }}
+          />
+
+          <div
+            className="absolute rounded-full overflow-hidden"
+            style={{
+              left: "19%",
+              top: "19%",
+              width: "62%",
+              height: "62%",
+              boxShadow: "0 0 1px rgba(255,107,26,0.6)",
+            }}
           >
-            <defs>
-              <radialGradient id="earth-ocean" cx="36%" cy="30%" r="78%">
-                <stop offset="0%" stopColor="#2A7BB0" />
-                <stop offset="42%" stopColor="#10456B" />
-                <stop offset="100%" stopColor="#03101A" />
-              </radialGradient>
-              <radialGradient id="earth-spec" cx="32%" cy="26%" r="46%">
-                <stop offset="0%" stopColor="#BFE6FF" stopOpacity={0.55} />
-                <stop offset="40%" stopColor="#7FC4F0" stopOpacity={0.12} />
-                <stop offset="100%" stopColor="#7FC4F0" stopOpacity={0} />
-              </radialGradient>
-              <radialGradient id="earth-night" cx="30%" cy="28%" r="78%">
-                <stop offset="52%" stopColor="#000000" stopOpacity={0} />
-                <stop offset="100%" stopColor="#000000" stopOpacity={0.9} />
-              </radialGradient>
-              <radialGradient id="atmos-glow" cx="50%" cy="50%" r="50%">
-                <stop offset="44%" stopColor="#FF6B1A" stopOpacity={0} />
-                <stop offset="74%" stopColor="#FF6B1A" stopOpacity={0.34} />
-                <stop offset="88%" stopColor="#FFB347" stopOpacity={0.18} />
-                <stop offset="100%" stopColor="#FF6B1A" stopOpacity={0} />
-              </radialGradient>
-              <clipPath id="earth-clip">
-                <circle cx={CENTER} cy={CENTER} r={GLOBE_RADIUS} />
-              </clipPath>
-            </defs>
-
-            <motion.circle
-              cx={CENTER}
-              cy={CENTER}
-              r={GLOBE_RADIUS + 64}
-              fill="url(#atmos-glow)"
-              style={reduceMotion ? undefined : { opacity: glowOpacity }}
+            <EarthGlobe />
+            <div
+              className="absolute inset-0 rounded-full pointer-events-none"
+              style={{ boxShadow: "inset 0 0 26px rgba(127,196,240,0.32)" }}
             />
+          </div>
 
-            <circle cx={CENTER} cy={CENTER} r={GLOBE_RADIUS + 3} fill="#FF6B1A" opacity={0.12} />
-            <circle cx={CENTER} cy={CENTER} r={GLOBE_RADIUS} fill="url(#earth-ocean)" />
-
-            <g clipPath="url(#earth-clip)">
-              <path d="M148 176 q30 -20 60 -8 q26 10 16 32 q-12 26 -46 20 q-40 -6 -30 -44z" fill="#15705A" opacity={0.6} />
-              <path d="M218 150 q34 -8 50 16 q12 18 -10 30 q-30 14 -50 -8 q-16 -24 10 -38z" fill="#176A4A" opacity={0.55} />
-              <path d="M168 256 q32 -12 56 8 q16 16 -8 32 q-34 18 -60 -6 q-14 -22 12 -34z" fill="#135E40" opacity={0.5} />
-              <path d="M250 250 q24 -6 34 12 q8 16 -12 24 q-24 8 -34 -10 q-6 -18 12 -26z" fill="#15614A" opacity={0.45} />
-
-              {MERIDIANS.map((k) => (
-                <ellipse
-                  key={`mer-${k}`}
-                  cx={CENTER}
-                  cy={CENTER}
-                  rx={GLOBE_RADIUS * k}
-                  ry={GLOBE_RADIUS}
-                  fill="none"
-                  stroke={k === 1 ? "#FF6B1A" : "#9FD4F5"}
-                  strokeOpacity={k === 1 ? 0.18 : 0.1}
-                  strokeWidth={0.8}
-                />
-              ))}
-              {PARALLELS.map((k) => (
-                <ellipse
-                  key={`par-${k}`}
-                  cx={CENTER}
-                  cy={CENTER}
-                  rx={GLOBE_RADIUS}
-                  ry={GLOBE_RADIUS * k}
-                  fill="none"
-                  stroke="#9FD4F5"
-                  strokeOpacity={0.08}
-                  strokeWidth={0.8}
-                />
-              ))}
-              <line x1={CENTER - GLOBE_RADIUS} y1={CENTER} x2={CENTER + GLOBE_RADIUS} y2={CENTER} stroke="#FF6B1A" strokeOpacity={0.16} strokeWidth={0.8} />
-
-              <g>
-                <animateTransform
-                  attributeName="transform"
-                  attributeType="XML"
-                  type="rotate"
-                  from="0 220 220"
-                  to="360 220 220"
-                  dur="110s"
-                  repeatCount="indefinite"
-                />
-                <ellipse cx={CENTER - 40} cy={CENTER - 34} rx={76} ry={11} fill="#FFFFFF" opacity={0.06} />
-                <ellipse cx={CENTER + 28} cy={CENTER + 30} rx={62} ry={9} fill="#FFFFFF" opacity={0.05} />
-              </g>
-
-              <ellipse cx={CENTER} cy={CENTER} rx={GLOBE_RADIUS} ry={GLOBE_RADIUS} fill="url(#earth-spec)" />
-              <ellipse cx={CENTER} cy={CENTER} rx={GLOBE_RADIUS} ry={GLOBE_RADIUS} fill="url(#earth-night)" />
-            </g>
-
-            <circle cx={CENTER} cy={CENTER} r={GLOBE_RADIUS} fill="none" stroke="#FF6B1A" strokeOpacity={0.6} strokeWidth={1.5} />
-            <circle cx={CENTER} cy={CENTER} r={GLOBE_RADIUS + 1.5} fill="none" stroke="#FFB347" strokeOpacity={0.18} strokeWidth={1} />
-          </svg>
+          <motion.div
+            className="absolute rounded-full"
+            style={{
+              left: "18.4%",
+              top: "18.4%",
+              width: "63.2%",
+              height: "63.2%",
+              border: "1px solid rgba(255,179,71,0.18)",
+              ...(reduceMotion ? {} : { opacity: glowOpacity }),
+            }}
+          />
 
           <motion.div className="absolute inset-0" style={orbitStyle}>
             <svg viewBox="0 0 440 440" className="w-full h-full block">
-              <circle
-                cx={CENTER}
-                cy={CENTER}
-                r={206}
-                fill="none"
-                stroke="#FF6B1A"
-                strokeOpacity={0.16}
-                strokeWidth={0.8}
-                strokeDasharray="2 8"
-              >
-                <animateTransform
-                  attributeName="transform"
-                  attributeType="XML"
-                  type="rotate"
-                  from="0 220 220"
-                  to="360 220 220"
-                  dur="90s"
-                  repeatCount="indefinite"
-                />
-              </circle>
-
               {RINGS.map((ring, index) => (
                 <ellipse
                   key={`ring-${index}`}
@@ -226,9 +162,9 @@ export function EarthOrbit({ size = 600, className = "" }: EarthOrbitProps) {
                   rx={ring.radius}
                   ry={ring.radius * ring.squash}
                   fill="none"
-                  stroke="#1F1F1F"
-                  strokeWidth={1}
-                  strokeOpacity={0.45}
+                  stroke="#FFB347"
+                  strokeWidth={0.8}
+                  strokeOpacity={0.1}
                 />
               ))}
 
@@ -244,9 +180,9 @@ export function EarthOrbit({ size = 600, className = "" }: EarthOrbitProps) {
                 </circle>
               ))}
 
-              {DEBRIS.map((item, index) => (
+              {ORBITERS.map((item, index) => (
                 <g
-                  key={`debris-${index}`}
+                  key={`orbiter-${index}`}
                   transform={`translate(${CENTER} ${CENTER}) scale(1 ${item.squash}) translate(${-CENTER} ${-CENTER})`}
                 >
                   <g>
@@ -259,8 +195,66 @@ export function EarthOrbit({ size = 600, className = "" }: EarthOrbitProps) {
                       dur={`${item.duration}s`}
                       repeatCount="indefinite"
                     />
-                    <circle cx={CENTER + item.radius} cy={CENTER} r={item.size + 3} fill={item.color} opacity={0.18} />
-                    <circle cx={CENTER + item.radius} cy={CENTER} r={item.size} fill={item.color} />
+                    {item.panel ? (
+                      <g>
+                        <rect
+                          x={CENTER + item.radius - 4.6}
+                          y={CENTER - 1.1}
+                          width={9.2}
+                          height={2.2}
+                          fill={item.color}
+                          opacity={0.55}
+                        />
+                        <circle cx={CENTER + item.radius} cy={CENTER} r={item.size + 3} fill={item.color} opacity={0.18} />
+                        <circle cx={CENTER + item.radius} cy={CENTER} r={item.size} fill={item.color} />
+                      </g>
+                    ) : (
+                      <g>
+                        <circle cx={CENTER + item.radius} cy={CENTER} r={item.size + 3} fill={item.color} opacity={0.18} />
+                        <circle cx={CENTER + item.radius} cy={CENTER} r={item.size} fill={item.color} />
+                      </g>
+                    )}
+                  </g>
+                </g>
+              ))}
+
+              {COLLISIONS.map((collision, index) => (
+                <g key={`collision-${index}`} transform={`translate(${collision.x} ${collision.y})`}>
+                  <g transform="scale(0.2)">
+                    <animateTransform
+                      attributeName="transform"
+                      attributeType="XML"
+                      type="scale"
+                      values="0.2;0.2;1;1.6;2.1"
+                      keyTimes={FLASH_KEYTIMES}
+                      dur={`${collision.dur}s`}
+                      begin={`${collision.delay}s`}
+                      repeatCount="indefinite"
+                    />
+                    <g opacity={0}>
+                      <animate
+                        attributeName="opacity"
+                        values="0;0;1;0.35;0"
+                        keyTimes={FLASH_KEYTIMES}
+                        dur={`${collision.dur}s`}
+                        begin={`${collision.delay}s`}
+                        repeatCount="indefinite"
+                      />
+                      {SPOKES.map((spoke, spokeIndex) => (
+                        <line
+                          key={spokeIndex}
+                          x1={0}
+                          y1={0}
+                          x2={spoke[0]}
+                          y2={spoke[1]}
+                          stroke="#FFB347"
+                          strokeWidth={0.6}
+                          strokeLinecap="round"
+                        />
+                      ))}
+                      <circle r={2.2} fill="#FF6B1A" />
+                      <circle r={1} fill="#FFFFFF" />
+                    </g>
                   </g>
                 </g>
               ))}
