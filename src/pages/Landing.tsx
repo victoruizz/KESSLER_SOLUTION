@@ -41,7 +41,7 @@ export function Landing() {
         ></div>
         <BinaryBackground density={28} opacity={0.04} />
 
-        <div className="relative max-w-7xl mx-auto px-6 md:px-10 pt-20 pb-28 grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+        <div className="relative max-w-7xl mx-auto px-6 md:px-10 pt-16 md:pt-24 pb-28 md:pb-36 grid gap-12 lg:grid-cols-[1fr_1.08fr] lg:items-center">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -78,12 +78,12 @@ export function Landing() {
           </motion.div>
 
           <motion.div
-            className="relative flex items-center justify-center"
-            initial={{ opacity: 0, scale: 0.94 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, ease: "easeOut", delay: 0.15 }}
+            className="relative flex items-center justify-center lg:justify-end"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
           >
-            <EarthOrbit />
+            <EarthOrbit size={680} className="lg:-mr-6 xl:-mr-12" />
           </motion.div>
         </div>
       </section>
