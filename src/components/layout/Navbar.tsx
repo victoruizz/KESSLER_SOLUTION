@@ -1,5 +1,6 @@
 import { NavLink, Link } from "react-router-dom";
 import { Avatar } from "../ui/Avatar";
+import { Logo } from "../ui/Logo";
 import { useSession } from "../../auth/session";
 
 const links = [
@@ -16,9 +17,7 @@ export function Navbar() {
     <header className="sticky top-0 z-40 backdrop-blur bg-space-black/85 border-b border-space-border">
       <div className="max-w-7xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3 group">
-          <span className="block w-6 h-6 border border-mars-orange relative">
-            <span className="absolute inset-1 bg-mars-orange/70 group-hover:bg-mars-orange transition-colors"></span>
-          </span>
+          <Logo size={36} className="shrink-0 text-text-primary group-hover:text-mars-orange transition-colors" />
           <div className="leading-tight">
             <div className="font-display font-bold text-base tracking-[0.32em] text-text-primary">KESSLER</div>
             <div className="hud-label text-mars-orange -mt-0.5">Projeto</div>

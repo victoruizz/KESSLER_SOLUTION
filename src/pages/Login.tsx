@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Rocket, ArrowRight } from "lucide-react";
 import { Button } from "../components/ui/Button";
+import { Logo } from "../components/ui/Logo";
 import { OrbitalRings } from "../components/visual/OrbitalRings";
 import { useSession } from "../auth/session";
 
@@ -55,9 +56,7 @@ export function Login() {
 
         <div className="relative">
           <div className="flex items-center gap-3">
-            <span className="block w-7 h-7 border border-mars-orange relative orange-glow">
-              <span className="absolute inset-1 bg-mars-orange/70"></span>
-            </span>
+            <Logo size={42} className="shrink-0 text-text-primary" />
             <div className="leading-tight">
               <div className="font-display font-bold text-lg tracking-[0.32em] text-text-primary">KESSLER</div>
               <div className="hud-label text-mars-orange -mt-0.5">Acesso a plataforma</div>
